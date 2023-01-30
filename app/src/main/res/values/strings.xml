@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Mô phỏng GPLX</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_settings">Cài đặt</string>
+    <string name="title_assignment">Thi thử</string>
+    <string name="chapter">Chương</string>
+    <string name="situation">Tình huống</string>
+</resources>
