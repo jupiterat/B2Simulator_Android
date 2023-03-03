@@ -37,6 +37,9 @@ class CategoryLocationAdapter(val context: Context) :
         with(holder) {
             binding.tvTitle.text = category.title
             binding.total.text = category.total.toString()
+            binding.progressCount.text = category.progress.toString()
+            binding.progress.progress =
+                ((category.progress.toFloat() / category.total) * 100).toInt()
             binding.root.background = ContextCompat.getDrawable(context, R.drawable.bg2)
             binding.root.setOnClickListener {
                 mListener?.onItemClicked(category.id)

@@ -1,4 +1,4 @@
-package com.tech.b2simulator.presentation
+package com.tech.common.views
 
 import android.content.Context
 import android.os.Bundle
@@ -6,14 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
-@AndroidEntryPoint
-abstract class BaseFragment : Fragment() {
-
-    abstract fun setUpViews()
-    abstract fun observeData()
+open class BaseFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         Timber.tag(this.javaClass.simpleName).d("onAttach")

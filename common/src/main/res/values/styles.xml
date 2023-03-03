@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextBold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SmallTextBold" parent="TextBold">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="MediumTextBold" parent="TextBold">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="LargeTextBold" parent="TextBold">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="SmallBlackTextBold" parent="SmallTextBold">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="MediumBlackTextBold" parent="MediumTextBold">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="LargeBlackTextBold" parent="LargeTextBold">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SmallBlackText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="MediumBlackText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="LargeBlackText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="SmallGrayItalicText">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+</resources>

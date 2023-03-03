@@ -42,4 +42,8 @@ object DataModule {
     @Singleton
     @Provides
     fun provideQuestionDao(db: AppDatabase) = db.questionDao
+
+    @Singleton
+    @Provides
+    fun provideExamDao(db: AppDatabase) = db.examDao
 }

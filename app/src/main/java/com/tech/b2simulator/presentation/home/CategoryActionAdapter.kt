@@ -12,9 +12,18 @@ import com.tech.b2simulator.domain.model.CategoryActionInfo
 class CategoryActionAdapter(val context: Context) :
     RecyclerView.Adapter<CategoryActionAdapter.CategoryActionVH>() {
     var data = listOf<CategoryActionInfo>()
+    private var mListener: CategoryActionAdapterItemClickedListener? = null
 
     class CategoryActionVH(val binding: ViewCategoryBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    fun setItemClickedListener(listener: CategoryActionAdapterItemClickedListener?) {
+        mListener = listener
+    }
+
+    interface CategoryActionAdapterItemClickedListener {
+        fun onItemClicked(categoryId: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryActionVH {
         val binding = ViewCategoryBinding.inflate(
@@ -29,8 +38,14 @@ class CategoryActionAdapter(val context: Context) :
         val category = data[position]
         with(holder) {
             binding.tvTitle.text = category.title
+            binding.progressCount.text = category.progress.toString()
             binding.total.text = category.total.toString()
+            binding.progress.progress =
+                ((category.progress.toFloat() / category.total) * 100).toInt()
             binding.root.background = ContextCompat.getDrawable(context, R.drawable.bg1)
+            binding.root.setOnClickListener {
+                mListener?.onItemClicked(category.id)
+            }
         }
     }
 

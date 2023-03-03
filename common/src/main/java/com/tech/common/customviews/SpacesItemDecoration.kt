@@ -1,4 +1,4 @@
-package com.tech.common.views
+package com.tech.common.customviews
 
 import android.graphics.Rect
 import android.view.View

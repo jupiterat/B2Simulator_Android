@@ -8,25 +8,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tech.b2simulator.domain.common.CategoryType
 import com.tech.b2simulator.common.ViewState
 import com.tech.b2simulator.databinding.FragmentHomeBinding
-import com.tech.b2simulator.presentation.BaseFragment
-import com.tech.common.views.SpacesItemDecoration
+import com.tech.b2simulator.presentation.B2BaseFragment
+import com.tech.common.customviews.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
+class HomeFragment : B2BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
     private val homeViewModel: HomeViewModel by viewModels()
     private var categoryActionAdapter: CategoryActionAdapter? = null
     private var categoryLocationAdapter: CategoryLocationAdapter? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,15 +42,31 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun setUpViews() {
-        //
-//        binding.toolbarContainer.toolbar.title = getString(R.string.title_home)
-        ///
         categoryActionAdapter = CategoryActionAdapter(requireContext())
+        categoryActionAdapter?.setItemClickedListener(object :
+            CategoryActionAdapter.CategoryActionAdapterItemClickedListener {
+            override fun onItemClicked(categoryId: Int) {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(
+                        CategoryType.ACTION(
+                            categoryId
+                        )
+                    )
+                )
+            }
+
+        })
         categoryLocationAdapter = CategoryLocationAdapter(requireContext())
         categoryLocationAdapter?.setItemClickedListener(object :
             CategoryLocationAdapter.CategoryLocationAdapterItemClickedListener {
             override fun onItemClicked(categoryId: Int) {
-                findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(categoryId))
+                findNavController().navigate(
+                    HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(
+                        CategoryType.LOCATION(
+                            categoryId
+                        )
+                    )
+                )
             }
         })
 
@@ -68,7 +80,14 @@ class HomeFragment : BaseFragment() {
         binding.rvCategoryAction.addItemDecoration(SpacesItemDecoration(10))
         binding.rvCategoryAction.adapter = categoryLocationAdapter
         binding.viewWrongAnswers.setOnClickListener {
-
+            findNavController().navigate(
+                HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(CategoryType.WRONG)
+            )
+        }
+        binding.viewSavedQuestions.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(CategoryType.SAVED)
+            )
         }
     }
 
@@ -92,6 +111,7 @@ class HomeFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         categoryLocationAdapter?.setItemClickedListener(null)
+        categoryActionAdapter?.setItemClickedListener(null)
         _binding = null
     }
 }

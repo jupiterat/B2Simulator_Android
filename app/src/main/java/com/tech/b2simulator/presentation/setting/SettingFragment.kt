@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.tech.b2simulator.databinding.FragmentSettingBinding
-import com.tech.b2simulator.presentation.BaseFragment
+import com.tech.b2simulator.presentation.B2BaseFragment
+import com.tech.common.views.BaseFragment
 
-class SettingFragment : BaseFragment() {
+class SettingFragment : B2BaseFragment() {
 
     private var _binding: FragmentSettingBinding? = null
 

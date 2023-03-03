@@ -18,10 +18,19 @@
     <fragment
         android:id="@+id/navigation_question"
         android:name="com.tech.b2simulator.presentation.question.QuestionListFragment"
-        android:label="QuestionFragment">
+        android:label="@string/title_question">
+        <action
+            android:id="@+id/action_navigation_question_to_navigation_player"
+            app:destination="@id/navigation_player" />
         <argument
-            android:name="categoryId"
-            app:argType="integer" />
+            android:name="questionType"
+            app:argType="com.tech.b2simulator.domain.common.CategoryType" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_player"
+        android:name="com.tech.b2simulator.presentation.player.PlayerFragment"
+        tools:layout="@layout/fragment_player">
+
+    </fragment>
 </navigation>
