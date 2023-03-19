@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tech.b2simulator.domain.common.CategoryType
 import com.tech.b2simulator.common.ViewState
 import com.tech.b2simulator.databinding.FragmentHomeBinding
+import com.tech.b2simulator.domain.common.CategoryType
 import com.tech.b2simulator.presentation.B2BaseFragment
 import com.tech.common.customviews.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,33 +42,32 @@ class HomeFragment : B2BaseFragment() {
     }
 
     override fun setUpViews() {
-        categoryActionAdapter = CategoryActionAdapter(requireContext())
-        categoryActionAdapter?.setItemClickedListener(object :
-            CategoryActionAdapter.CategoryActionAdapterItemClickedListener {
-            override fun onItemClicked(categoryId: Int) {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(
-                        CategoryType.ACTION(
-                            categoryId
+        categoryActionAdapter =
+            CategoryActionAdapter(requireContext(), object : CategoryAdapterItemClickedListener {
+                override fun onItemClicked(categoryId: Int) {
+                    findNavController().navigate(
+                        HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(
+                            CategoryType.ACTION(
+                                categoryId
+                            )
                         )
                     )
-                )
-            }
+                }
 
-        })
-        categoryLocationAdapter = CategoryLocationAdapter(requireContext())
-        categoryLocationAdapter?.setItemClickedListener(object :
-            CategoryLocationAdapter.CategoryLocationAdapterItemClickedListener {
-            override fun onItemClicked(categoryId: Int) {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(
-                        CategoryType.LOCATION(
-                            categoryId
+            })
+        categoryLocationAdapter =
+            CategoryLocationAdapter(requireContext(), object : CategoryAdapterItemClickedListener {
+                override fun onItemClicked(categoryId: Int) {
+                    findNavController().navigate(
+                        HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(
+                            CategoryType.LOCATION(
+                                categoryId
+                            )
                         )
                     )
-                )
-            }
-        })
+                }
+
+            })
 
         binding.rvCategoryLocation.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
@@ -95,14 +94,14 @@ class HomeFragment : B2BaseFragment() {
     override fun observeData() {
         homeViewModel.categoryActionLiveData.observe(viewLifecycleOwner) {
             if (it is ViewState.Success) {
-                categoryActionAdapter?.data = it.data
+                categoryActionAdapter?.setItems(it.data)
                 categoryActionAdapter?.notifyDataSetChanged()
             }
         }
 
         homeViewModel.categoryLocationLiveData.observe(viewLifecycleOwner) {
             if (it is ViewState.Success) {
-                categoryLocationAdapter?.data = it.data
+                categoryLocationAdapter?.setItems(it.data)
                 categoryLocationAdapter?.notifyDataSetChanged()
             }
         }
@@ -110,8 +109,8 @@ class HomeFragment : B2BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        categoryLocationAdapter?.setItemClickedListener(null)
-        categoryActionAdapter?.setItemClickedListener(null)
+        categoryLocationAdapter?.setListener(null)
+        categoryActionAdapter?.setListener(null)
         _binding = null
     }
 }

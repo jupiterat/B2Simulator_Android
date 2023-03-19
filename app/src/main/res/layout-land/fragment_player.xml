@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.player.PlayerFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.tech.b2simulator.domain.common.QuestionScoreType" />
+
+        <variable
+            name="question"
+            type="com.tech.b2simulator.domain.model.QuestionInfo" />
+
+        <variable
+            name="fragment"
+            type="com.tech.b2simulator.presentation.player.PlayerFragment" />
+
+        <variable
+            name="scoreType"
+            type="com.tech.b2simulator.domain.common.QuestionScoreType" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/red">
+
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/playerView"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            app:controller_layout_id="@layout/custom_exo_player_control_view"
+            app:hide_on_touch="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:show_buffering="when_playing"
+            app:show_timeout="0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/how"
+            style="@style/SmallGrayItalicText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/how_to_play"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/playerView" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBackward"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_arrow_back_ios_24"
+            android:onClick="@{() -> fragment.previousQuestion()}"
+            app:layout_constraintBottom_toBottomOf="@id/btnSpace"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
+            app:layout_constraintRight_toLeftOf="@id/btnSpace"
+            app:layout_constraintTop_toTopOf="@id/btnSpace" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnForward"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:onClick="@{() -> fragment.nextQuestion()}"
+            app:layout_constraintBottom_toBottomOf="@id/btnSpace"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/btnSpace"
+            app:layout_constraintRight_toRightOf="@id/rightGuideline"
+            app:layout_constraintTop_toTopOf="@id/btnSpace" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSpace"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:onClick="@{() -> fragment.onSpaceClicked()}"
+            android:padding="10dp"
+            android:text="@string/space"
+            android:textSize="30sp"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="10"
+            app:layout_constraintLeft_toRightOf="@id/btnBackward"
+            app:layout_constraintRight_toLeftOf="@id/btnForward"
+            app:layout_constraintTop_toBottomOf="@id/how" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="10dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            style="@style/MediumBlackTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{question.title + `:`}"
+            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@id/btnSpace" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/content"
+            style="@style/MediumBlackText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{question.description.toString()}"
+            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
+            app:layout_constraintRight_toLeftOf="@id/rightGuideline"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hintTitle"
+            style="@style/MediumBlackTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{@string/hint + `:`}"
+            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@id/content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hint"
+            style="@style/MediumBlackText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@{question.hint}"
+            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
+            app:layout_constraintRight_toLeftOf="@id/rightGuideline"
+            app:layout_constraintTop_toBottomOf="@id/hintTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/resultTitle"
+            style="@style/MediumBlackTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/result + `:`}"
+            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@id/hint" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/result"
+            style="@style/ScoreStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@{scoreType == QuestionScoreType.ZERO ? @string/failed : @string/passed}"
+            android:textColor="@{scoreType == QuestionScoreType.ZERO ? @color/red : @color/green}"
+            android:visibility="@{scoreType == QuestionScoreType.UNDEFINED ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/resultTitle"
+            app:layout_constraintLeft_toRightOf="@id/resultTitle"
+            app:layout_constraintTop_toTopOf="@id/resultTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scoreTitle"
+            style="@style/MediumBlackTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/score + `:`}"
+            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@id/resultTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvScore"
+            style="@style/ScoreStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@{String.valueOf(scoreType.score) + `/5`}"
+            android:visibility="@{scoreType == QuestionScoreType.UNDEFINED ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/scoreTitle"
+            app:layout_constraintLeft_toRightOf="@id/scoreTitle"
+            app:layout_constraintTop_toBottomOf="@id/resultTitle"
+            app:layout_constraintTop_toTopOf="@id/scoreTitle" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

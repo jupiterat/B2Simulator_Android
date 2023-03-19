@@ -1,36 +1,33 @@
 package com.tech.b2simulator.presentation.player
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SeekParameters
 import com.google.android.exoplayer2.ui.DefaultTimeBar
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.tech.b2simulator.BuildConfig
+import com.tech.b2simulator.BuildConfig.BASE_URL
 import com.tech.b2simulator.R
-import com.tech.b2simulator.common.getQuestionScoreColor
 import com.tech.b2simulator.databinding.FragmentPlayerBinding
 import com.tech.b2simulator.domain.common.QuestionScoreType
 import com.tech.b2simulator.domain.model.QuestionInfo
 import com.tech.b2simulator.presentation.B2BaseFragment
-import com.tech.b2simulator.presentation.question.QuestionListViewModel
 import com.tech.common.utils.ScreenUtils
 import timber.log.Timber
 import kotlin.math.roundToInt
 
-class PlayerFragment : B2BaseFragment() {
+abstract class PlayerFragment : B2BaseFragment() {
 
-    private var binding: FragmentPlayerBinding? = null
-    private val playerViewModel: PlayerViewModel by viewModels()
-    private val questionListViewModel: QuestionListViewModel by activityViewModels()
+    protected var binding: FragmentPlayerBinding? = null
     private var player: ExoPlayer? = null
     private var playWhenReady = true
     private var currentItem = 0
@@ -42,24 +39,10 @@ class PlayerFragment : B2BaseFragment() {
     private var scoreRangeView: ConstraintLayout? = null
     private var flag: AppCompatImageView? = null
 
+    var resetBtn: ImageView? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        return inflater.inflate(R.menu.player_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.action_save) {
-            playerViewModel.saveQuestion()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
-    }
+    abstract fun getPlayerViewModel(): PlayerViewModel
+    abstract fun getDataViewModel(): PlayerDataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,20 +61,24 @@ class PlayerFragment : B2BaseFragment() {
         initializePlayer()
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+    }
+
     override fun observeData() {
-        questionListViewModel.selectedQuestion.value?.let {
+        getDataViewModel().getSelectedQuestion().value?.let {
             setPlayerViewModelData(it)
         }
-        questionListViewModel.selectedQuestion.observe(viewLifecycleOwner) {
+        getDataViewModel().getSelectedQuestion().observe(viewLifecycleOwner) {
             setPlayerViewModelData(it)
         }
-        playerViewModel.selectedQuestion.observe(viewLifecycleOwner) {
+        getPlayerViewModel().selectedQuestion.observe(viewLifecycleOwner) {
             resetPlayer()
             setQuestionInfo(it)
             updatePlayerUrl(it.url)
         }
 
-        playerViewModel.flagPosition.observe(viewLifecycleOwner) { percent ->
+        getPlayerViewModel().flagPosition.observe(viewLifecycleOwner) { percent ->
             Timber.e("flagPosition received")
             if (flag != null && progressBar != null) {
                 flag!!.apply {
@@ -101,7 +88,7 @@ class PlayerFragment : B2BaseFragment() {
             }
         }
 
-        playerViewModel.scoreRangePosition.observe(viewLifecycleOwner) {
+        getPlayerViewModel().scoreRangePosition.observe(viewLifecycleOwner) {
             val params = scoreRangeView?.layoutParams
 
             Timber.e("scoreRangePosition received")
@@ -115,22 +102,11 @@ class PlayerFragment : B2BaseFragment() {
                 visibility = View.VISIBLE
             }
         }
-
-        playerViewModel.score.observe(viewLifecycleOwner) {
-            Timber.d("score observe received $it")
-            binding?.scoreType = it
-            binding?.tvScore?.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    getQuestionScoreColor(it.score)
-                )
-            )
-        }
     }
 
     private fun setPlayerViewModelData(data: QuestionInfo?) {
         data?.let {
-            playerViewModel.setCurrentQuestion(it)
+            getPlayerViewModel().setCurrentQuestion(it)
         }
     }
 
@@ -139,36 +115,38 @@ class PlayerFragment : B2BaseFragment() {
     }
 
     private fun initializePlayer() {
-        player = ExoPlayer.Builder(requireContext())
-            .build()
-            .also { exoPlayer ->
-                val mediaItem =
-                    MediaItem.fromUri("https://amycosmetics.online/mophong/${playerViewModel.selectedQuestion.value?.url}")
-                exoPlayer.setMediaItem(mediaItem)
-                exoPlayer.setSeekParameters(SeekParameters.CLOSEST_SYNC)
-                exoPlayer.playWhenReady = playWhenReady
-                exoPlayer.seekTo(currentItem, playbackPosition)
-                exoPlayer.prepare()
-                binding?.playerView?.player = exoPlayer
+        val playerView = binding?.playerView
+        playerView?.let {
+            player = ExoPlayer.Builder(requireContext())
+                .build()
+                .also { exoPlayer ->
+                    val mediaItem =
+                        MediaItem.fromUri(BASE_URL + { getPlayerViewModel().selectedQuestion.value?.url })
+                    exoPlayer.setMediaItem(mediaItem)
+                    exoPlayer.setSeekParameters(SeekParameters.CLOSEST_SYNC)
+                    exoPlayer.playWhenReady = playWhenReady
+                    exoPlayer.seekTo(currentItem, playbackPosition)
+                    exoPlayer.prepare()
+                    it.player = exoPlayer
+                }
+            it.setShowNextButton(false)
+            it.setShowPreviousButton(false)
+            it.setShowFastForwardButton(false)
+            it.setShowRewindButton(false)
+            controllerView =
+                it.findViewById(com.google.android.exoplayer2.R.id.exo_controller)
+            controllerView?.let { controllerView ->
+                progressBar =
+                    controllerView.findViewById(com.google.android.exoplayer2.R.id.exo_progress)
+                progressContainer = controllerView.findViewById(R.id.progressContainer)
+                flag = controllerView.findViewById(R.id.flag)
+                scoreRangeView = controllerView.findViewById(R.id.constraintLayout)
+                resetBtn = controllerView.findViewById(R.id.exo_reset)
+                resetBtn?.setOnClickListener {
+                    resetPlayer()
+                }
             }
-        binding?.playerView?.setShowNextButton(false)
-        binding?.playerView?.setShowPreviousButton(false)
-        binding?.playerView?.setShowFastForwardButton(false)
-        binding?.playerView?.setShowRewindButton(false)
-        controllerView =
-            binding?.playerView?.findViewById(com.google.android.exoplayer2.R.id.exo_controller)
-        progressBar =
-            controllerView?.findViewById(com.google.android.exoplayer2.R.id.exo_progress)
-        progressContainer =
-            controllerView?.findViewById(R.id.progressContainer)
-        flag =
-            controllerView?.findViewById(R.id.flag)
-        scoreRangeView =
-            controllerView?.findViewById(R.id.constraintLayout)
-        controllerView?.findViewById<ImageView>(R.id.exo_reset)?.setOnClickListener {
-            resetPlayer()
         }
-
         progressBar?.hideScrubber(true)
     }
 
@@ -195,11 +173,11 @@ class PlayerFragment : B2BaseFragment() {
     }
 
     fun nextQuestion() {
-        questionListViewModel.nextQuestion()
+        getDataViewModel().nextQuestion()
     }
 
     fun previousQuestion() {
-        questionListViewModel.previousQuestion()
+        getDataViewModel().previousQuestion()
     }
 
     fun onSpaceClicked() {
@@ -242,7 +220,8 @@ class PlayerFragment : B2BaseFragment() {
         }
 
         player?.let { player ->
-            playerViewModel.spaceClicked(player.duration, player.currentPosition)
+            getPlayerViewModel().spaceClicked(player.duration, player.currentPosition)
+
         }
     }
 

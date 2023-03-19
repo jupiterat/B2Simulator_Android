@@ -14,6 +14,9 @@ interface QuestionsDao {
     @Query("SELECT * FROM Questions WHERE groupByLocation = :id")
     fun getQuestionsByCategoryLocation(id: Int): Flow<List<Questions>>
 
+    @Query("SELECT * FROM Questions WHERE groupByLocation = :id order by random() limit :limit")
+    fun getQuestionsByCategoryLocationIdWithLimit(id: Int, limit: Int): Flow<List<Questions>>
+
     @Query("SELECT COUNT(*) FROM Questions WHERE groupByLocation = :id")
     fun getQuestionsCountByCategoryLocation(id: Int): Int
 

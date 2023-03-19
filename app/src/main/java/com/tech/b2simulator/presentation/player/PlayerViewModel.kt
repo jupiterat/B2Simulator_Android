@@ -2,20 +2,14 @@ package com.tech.b2simulator.presentation.player
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.tech.b2simulator.domain.common.QuestionScoreType
 import com.tech.b2simulator.domain.model.QuestionInfo
-import com.tech.b2simulator.domain.usecase.SaveQuestionScoreUseCase
 import com.tech.b2simulator.presentation.BaseViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltViewModel
-class PlayerViewModel @Inject constructor(
-    private val saveQuestionScoreUseCase: SaveQuestionScoreUseCase
-) : BaseViewModel() {
+
+abstract class PlayerViewModel :
+    BaseViewModel() {
     private val _selectedQuestion = MutableLiveData<QuestionInfo>()
     val selectedQuestion: LiveData<QuestionInfo>
         get() = _selectedQuestion
@@ -79,23 +73,5 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    private fun updateScore(score: Int) {
-        viewModelScope.launch {
-            val question = selectedQuestion.value
-            question?.let {
-                it.score = score
-                saveQuestionScoreUseCase.invoke(it)
-            }
-        }
-    }
-
-    fun saveQuestion() {
-        viewModelScope.launch {
-            val question = selectedQuestion.value
-            question?.let {
-                it.saved = true
-                saveQuestionScoreUseCase.invoke(it)
-            }
-        }
-    }
+    abstract fun updateScore(score: Int)
 }

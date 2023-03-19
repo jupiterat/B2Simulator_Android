@@ -10,6 +10,15 @@
         android:id="@+id/navigation_exam"
         android:name="com.tech.b2simulator.presentation.exam.ExamListFragment"
         android:label="@string/title_assignment"
-        tools:layout="@layout/fragment_exam_list" />
+        tools:layout="@layout/fragment_exam_list">
+        <action
+            android:id="@+id/action_navigation_exam_to_navigation_player"
+            app:destination="@id/navigation_exam_player" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_exam_player"
+        android:name="com.tech.b2simulator.presentation.player.ExamPlayerFragment"
+        tools:layout="@layout/fragment_player" />
 
 </navigation>

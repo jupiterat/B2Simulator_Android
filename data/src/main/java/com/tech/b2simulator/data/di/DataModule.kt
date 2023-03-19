@@ -12,18 +12,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
-//    @Provides
-//    @Singleton
-//    fun provideCategoryRepository(db: AppDatabase): CategoryRepository {
-//        return CategoryImpl(db.categoryDao)
-//    }
-//
-//    @Provides
-//    @Singleton
-//    fun provideQuestionRepository(db: AppDatabase): QuestionRepository {
-//        return QuestionsRepositoryImpl(db.questionDao)
-//    }
-
     @Provides
     @Singleton
     fun provideDatabase(app: Application): AppDatabase {

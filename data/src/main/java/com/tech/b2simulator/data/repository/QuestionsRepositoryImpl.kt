@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 class QuestionsRepositoryImpl @Inject constructor(private val dao: QuestionsDao) :
     QuestionRepository {
+
     override fun getQuestionCountByCategoryLocation(id: Int): Int {
         Timber.d("getQuestionCountByCategoryLocation with id $id")
         return dao.getQuestionsCountByCategoryLocation(id)
@@ -25,6 +26,18 @@ class QuestionsRepositoryImpl @Inject constructor(private val dao: QuestionsDao)
     override fun getQuestionsByCategoryLocationId(categoryId: Int): Flow<List<QuestionInfo>> {
         Timber.d("getQuestionsByCategoryLocationId")
         return dao.getQuestionsByCategoryLocation(categoryId).map {
+            it.map { item ->
+                item.toQuestionInfo()
+            }
+        }
+    }
+
+    override fun getQuestionsByCategoryLocationIdWithLimit(
+        categoryId: Int,
+        limit: Int
+    ): Flow<List<QuestionInfo>> {
+        Timber.d("getQuestionsByCategoryLocationIdWithLimit")
+        return dao.getQuestionsByCategoryLocationIdWithLimit(categoryId, limit).map {
             it.map { item ->
                 item.toQuestionInfo()
             }

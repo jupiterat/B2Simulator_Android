@@ -3,14 +3,15 @@ package com.tech.b2simulator.presentation.question
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
-import com.tech.b2simulator.domain.common.CategoryType
 import com.tech.b2simulator.common.ViewState
+import com.tech.b2simulator.domain.common.CategoryType
 import com.tech.b2simulator.domain.model.QuestionInfo
 import com.tech.b2simulator.domain.usecase.GetQuestionByCategoryActionIdUseCase
 import com.tech.b2simulator.domain.usecase.GetQuestionByCategoryLocationIdUseCase
 import com.tech.b2simulator.domain.usecase.GetQuestionByWrongAnswerUseCase
 import com.tech.b2simulator.domain.usecase.GetSavedQuestionsUseCase
 import com.tech.b2simulator.presentation.BaseViewModel
+import com.tech.b2simulator.presentation.player.PlayerDataViewModel
 import com.tech.common.viewmodels.lazyMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -27,12 +28,10 @@ class QuestionListViewModel @Inject constructor(
     private val getQuestionByWrongAnswerUseCase: GetQuestionByWrongAnswerUseCase,
     private val getSavedQuestionsUseCase: GetSavedQuestionsUseCase
 ) :
-    BaseViewModel() {
+    BaseViewModel(), PlayerDataViewModel {
 
     private val _selectedQuestion = MutableLiveData<QuestionInfo>()
-    val selectedQuestion: LiveData<QuestionInfo>
-        get() = _selectedQuestion
-
+    private val _noMoreQuestion = MutableLiveData<QuestionInfo>()
     private var selectedIndex = -1
 
     private var selectedCategory: CategoryType? = null
@@ -116,48 +115,35 @@ class QuestionListViewModel @Inject constructor(
         return questionLiveData.getValue(type)
     }
 
-    fun selectQuestion(position: Int) {
+    override fun selectQuestion(position: Int) {
         Timber.d("selectQuestion")
-        selectedIndex = position
-        if (isSuccessState()) {
-            val data =
-                (questionLiveData[selectedCategory]?.value as? ViewState.Success<List<QuestionInfo>>)
-            data?.data?.let {
+        val data =
+            (questionLiveData[selectedCategory]?.value as? ViewState.Success<List<QuestionInfo>>)
+        data?.data?.let {
+            if (position < it.size) {
+                selectedIndex = position
                 _selectedQuestion.value = it[position]
+            } else {
+                Timber.d("No more data")
             }
-
         }
     }
 
-    fun nextQuestion() {
+    override fun getSelectedQuestion(): LiveData<QuestionInfo> {
+        return _selectedQuestion
+    }
+
+    override fun nextQuestion() {
         val next = selectedIndex + 1
-        if (isSuccessState()) {
-            val data =
-                (questionLiveData[selectedCategory]?.value as? ViewState.Success<List<QuestionInfo>>)
-            data?.data?.let {
-                if (next < it.size) {
-                    selectQuestion(next)
-                }
-            }
-        }
+        selectQuestion(next)
     }
 
-    fun previousQuestion() {
+    override fun previousQuestion() {
         val prev = selectedIndex - 1
         if (prev < 0) {
             return
         }
         selectQuestion(prev)
-    }
-
-    private fun isSuccessState(): Boolean {
-        selectedCategory?.let {
-            val data = questionLiveData[it]
-            if (data?.value is ViewState.Success) {
-                return true
-            }
-        }
-        return false
     }
 }
 

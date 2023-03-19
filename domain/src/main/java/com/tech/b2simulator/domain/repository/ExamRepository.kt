@@ -1,6 +1,7 @@
 package com.tech.b2simulator.domain.repository
 
 import com.tech.b2simulator.domain.model.ExamInfo
+import com.tech.b2simulator.domain.model.QuestionInfo
 import kotlinx.coroutines.flow.Flow
 
 interface ExamRepository {

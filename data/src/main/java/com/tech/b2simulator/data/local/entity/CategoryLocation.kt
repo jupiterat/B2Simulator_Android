@@ -4,4 +4,4 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class CategoryLocation(@PrimaryKey val id: Int, val title: String)
+data class CategoryLocation(@PrimaryKey val id: Int, val title: String, val totalInExam: Int)

@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/navigation_player"
-        android:name="com.tech.b2simulator.presentation.player.PlayerFragment"
+        android:name="com.tech.b2simulator.presentation.player.QuestionPlayerFragment"
         tools:layout="@layout/fragment_player">
 
     </fragment>

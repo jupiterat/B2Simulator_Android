@@ -15,6 +15,7 @@
     <string name="how_to_play">Bấm space khi gặp tình huống nguy hiểm</string>
     <string name="slash">/</string>
     <string name="action_save">save</string>
+    <string name="action_info">info</string>
     <string name="no_saved_question_message">Bạn chưa lưu lại câu hỏi nào!!!</string>
     <string name="no_wrong_question_message">Tuyệt vời.\nBạn chưa sai lại câu hỏi nào!!!</string>
 </resources>

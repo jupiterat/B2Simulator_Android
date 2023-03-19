@@ -15,7 +15,7 @@ fun CategoryAction.toCategoryActionInfo(): CategoryActionInfo {
 
 
 fun CategoryLocation.toCategoryLocationInfo(): CategoryLocationInfo {
-    return CategoryLocationInfo(id, title, 0)
+    return CategoryLocationInfo(id, title, 0, totalInExam = totalInExam)
 }
 
 fun Questions.toQuestionInfo(): QuestionInfo {

@@ -3,10 +3,9 @@ package com.tech.b2simulator.presentation.exam
 import ItemOffsetDecoration
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import android.view.*
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tech.b2simulator.R
 import com.tech.b2simulator.common.ViewState
@@ -18,13 +17,31 @@ import timber.log.Timber
 
 class ExamListFragment : B2BaseFragment() {
 
-    private val viewModel: ExamViewModel by viewModels()
+    private val viewModel: ExamViewModel by activityViewModels()
 
     private var _binding: FragmentExamListBinding? = null
 
     private val binding get() = _binding!!
 
     private var examListAdapter: ExamListAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        return inflater.inflate(R.menu.exam_list_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_info) {
+            //todo
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +63,8 @@ class ExamListFragment : B2BaseFragment() {
 
         examListAdapter!!.listener = object : ExamListAdapter.ExamClickedListener {
             override fun onExamClicked(position: Int, exam: ExamInfo) {
-
+                viewModel.selectedExam(position)
+                findNavController().navigate(ExamListFragmentDirections.actionNavigationExamToNavigationPlayer())
             }
         }
 
@@ -61,7 +79,6 @@ class ExamListFragment : B2BaseFragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun observeData() {
         viewModel.loadExams().observe(viewLifecycleOwner) {
-
             when (it) {
                 is ViewState.Success -> {
                     Timber.d("loadExams received Success")
