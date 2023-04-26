@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.tech.b2simulator.R
-import com.tech.b2simulator.common.getQuestionScoreColor
 import com.tech.b2simulator.presentation.question.QuestionListViewModel
-import timber.log.Timber
 
 class QuestionPlayerFragment : PlayerFragment() {
 
@@ -43,17 +40,25 @@ class QuestionPlayerFragment : PlayerFragment() {
         }
     }
 
+    override fun setUpViews() {
+        super.setUpViews()
+    }
+
     override fun observeData() {
         super.observeData()
-        getPlayerViewModel().score.observe(viewLifecycleOwner) {
-            Timber.d("score observe received $it")
-            binding?.scoreType = it
-            binding?.tvScore?.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    getQuestionScoreColor(it.score)
-                )
-            )
+        getPlayerViewModel().selectedQuestion.observe(viewLifecycleOwner) {
+            if (it.id % 10 == 0) {
+                player?.pause()
+                showInterstitialAds()
+            }
         }
+    }
+
+    override fun getInterstitialAdId(): String {
+        return getString(R.string.question_list_interstitial_result_ads_id)
+    }
+
+    override fun shouldResetAd(): Boolean {
+        return true
     }
 }

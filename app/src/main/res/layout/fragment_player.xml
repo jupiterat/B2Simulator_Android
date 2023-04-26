@@ -43,6 +43,17 @@
             app:show_buffering="when_playing"
             app:show_timeout="0" />
 
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/player_banner_ads_id"
+            ads:layout_constraintTop_toBottomOf="@id/playerView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/how"
             style="@style/SmallGrayItalicText"
@@ -52,7 +63,7 @@
             android:text="@string/how_to_play"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/playerView" />
+            app:layout_constraintTop_toBottomOf="@id/adView" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBackward"
@@ -112,90 +123,105 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="10dp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title"
-            style="@style/MediumBlackTextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{question.title + `:`}"
-            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@id/btnSpace" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/content"
-            style="@style/MediumBlackText"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{question.description.toString()}"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/leftGuideline"
             app:layout_constraintRight_toLeftOf="@id/rightGuideline"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            app:layout_constraintTop_toBottomOf="@id/btnSpace">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/hintTitle"
-            style="@style/MediumBlackTextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@{@string/hint + `:`}"
-            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@id/content" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/hint"
-            style="@style/MediumBlackText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@{question.hint}"
-            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
-            app:layout_constraintRight_toLeftOf="@id/rightGuideline"
-            app:layout_constraintTop_toBottomOf="@id/hintTitle" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title"
+                    style="@style/MediumBlackTextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{question.title + `:`}" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/resultTitle"
-            style="@style/MediumBlackTextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/result + `:`}"
-            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@id/hint" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/content"
+                    style="@style/MediumBlackText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ question.description}" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/hintTitle"
+                    style="@style/MediumBlackTextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@{@string/hint + `:`}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/hint"
+                    style="@style/MediumBlackText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@{question.hint}" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/resultTitle"
+                    style="@style/MediumBlackTextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/result + `:`}" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/result"
-            style="@style/ScoreStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@{scoreType == QuestionScoreType.ZERO ? @string/failed : @string/passed}"
-            android:textColor="@{scoreType == QuestionScoreType.ZERO ? @color/red : @color/green}"
-            android:visibility="@{scoreType == QuestionScoreType.UNDEFINED ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/resultTitle"
-            app:layout_constraintLeft_toRightOf="@id/resultTitle"
-            app:layout_constraintTop_toTopOf="@id/resultTitle" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/result"
+                    style="@style/ScoreStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@{scoreType == QuestionScoreType.ZERO ? @string/failed : @string/passed}"
+                    android:textColor="@{scoreType == QuestionScoreType.ZERO ? @color/red : @color/green}"
+                    android:visibility="@{scoreType == QuestionScoreType.UNDEFINED ? View.GONE : View.VISIBLE}" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/scoreTitle"
-            style="@style/MediumBlackTextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/score + `:`}"
-            app:layout_constraintLeft_toRightOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@id/resultTitle" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvScore"
-            style="@style/ScoreStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@{String.valueOf(scoreType.score) + `/5`}"
-            android:visibility="@{scoreType == QuestionScoreType.UNDEFINED ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/scoreTitle"
-            app:layout_constraintLeft_toRightOf="@id/scoreTitle"
-            app:layout_constraintTop_toBottomOf="@id/resultTitle"
-            app:layout_constraintTop_toTopOf="@id/scoreTitle" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/scoreTitle"
+                    style="@style/MediumBlackTextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/score + `:`}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvScore"
+                    style="@style/ScoreStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@{String.valueOf(scoreType.score) + `/5`}"
+                    android:visibility="@{scoreType == QuestionScoreType.UNDEFINED ? View.GONE : View.VISIBLE}" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

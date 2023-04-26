@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
 import com.tech.b2simulator.common.ViewState
 import com.tech.b2simulator.databinding.FragmentHomeBinding
 import com.tech.b2simulator.domain.common.CategoryType
 import com.tech.b2simulator.presentation.B2BaseFragment
 import com.tech.common.customviews.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : B2BaseFragment() {
@@ -36,12 +40,12 @@ class HomeFragment : B2BaseFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setUpViews() {
+        setupAd()
+        setupCategories()
     }
 
-    override fun setUpViews() {
+    private fun setupCategories() {
         categoryActionAdapter =
             CategoryActionAdapter(requireContext(), object : CategoryAdapterItemClickedListener {
                 override fun onItemClicked(categoryId: Int) {
@@ -88,6 +92,20 @@ class HomeFragment : B2BaseFragment() {
                 HomeFragmentDirections.actionNavigationHomeToNavigationQuestion(CategoryType.SAVED)
             )
         }
+    }
+
+    private fun setupAd() {
+        val adRequest = AdRequest.Builder().build()
+        _binding?.adView?.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                Timber.d("onAdLoaded")
+            }
+
+            override fun onAdFailedToLoad(p0: LoadAdError) {
+                Timber.d("onAdFailedToLoad")
+            }
+        }
+        _binding?.adView?.loadAd(adRequest)
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -10,6 +10,7 @@ import timber.log.Timber
 
 abstract class PlayerViewModel :
     BaseViewModel() {
+    private var isSpaceClicked = false
     private val _selectedQuestion = MutableLiveData<QuestionInfo>()
     val selectedQuestion: LiveData<QuestionInfo>
         get() = _selectedQuestion
@@ -30,8 +31,19 @@ abstract class PlayerViewModel :
     val score: LiveData<QuestionScoreType>
         get() = _score
 
+    fun nextQuestion() {
+        _score.value = QuestionScoreType.UNDEFINED
+    }
+
+    fun previousQuestion() {
+        _score.value = QuestionScoreType.UNDEFINED
+    }
+
     fun spaceClicked(duration: Long, current: Long) {
         Timber.d("spaceClicked with duration: $duration and current: $current")
+        if (_score.value != null && _score.value != QuestionScoreType.UNDEFINED) {
+            return
+        }
         calculateFlagPosition(duration, current)
         val ranges = selectedQuestion.value?.validTime?.split('-')
         if (ranges?.size == 2) {
@@ -58,7 +70,7 @@ abstract class PlayerViewModel :
 
     private fun calculateScore(current: Long, start: Float, end: Float) {
         if (current < start || current > end) {
-            _score.value = QuestionScoreType.ZERO
+            _score.postValue(QuestionScoreType.ZERO)
             updateScore(QuestionScoreType.ZERO.score)
             return
         }
@@ -66,7 +78,7 @@ abstract class PlayerViewModel :
         for (i in 1..5) {
             if (current <= (start + rangePerScore * i)) {
                 val score = QuestionScoreType.fromInt(6 - i)
-                _score.value = score
+                _score.postValue(score)
                 updateScore(score.score)
                 return
             }

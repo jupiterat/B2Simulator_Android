@@ -10,6 +10,34 @@
         android:id="@+id/navigation_setting"
         android:name="com.tech.b2simulator.presentation.setting.SettingFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_setting_to_webview"
+            app:destination="@id/navigation_webview"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_setting_to_notification_setting"
+            app:destination="@id/navigation_notification_setting"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_webview"
+        android:name="com.tech.common.views.WebViewFragment">
+        <argument
+            android:name="url"
+            app:argType="string" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_notification_setting"
+        android:name="com.tech.b2simulator.presentation.setting.notification.NotificationSettingFragment" />
 
 </navigation>

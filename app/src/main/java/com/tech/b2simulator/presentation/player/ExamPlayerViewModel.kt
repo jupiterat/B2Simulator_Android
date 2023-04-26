@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ExamPlayerViewModel @Inject constructor(private val saveExamScoreUseCase: SaveExamScoreUseCase) :
     PlayerViewModel() {
-    private var examScore: Int = 0
+    var examScore: Int = 0
 
     override fun updateScore(score: Int) {
         examScore += score

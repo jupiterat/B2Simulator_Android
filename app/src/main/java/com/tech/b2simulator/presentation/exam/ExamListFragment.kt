@@ -7,6 +7,7 @@ import android.view.*
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.*
 import com.tech.b2simulator.R
 import com.tech.b2simulator.common.ViewState
 import com.tech.b2simulator.databinding.FragmentExamListBinding
@@ -57,6 +58,11 @@ class ExamListFragment : B2BaseFragment() {
     }
 
     override fun setUpViews() {
+        setupAd()
+        setupExamList()
+    }
+
+    private fun setupExamList() {
         if (examListAdapter == null) {
             examListAdapter = ExamListAdapter(requireContext())
         }
@@ -74,6 +80,20 @@ class ExamListFragment : B2BaseFragment() {
             ItemOffsetDecoration(requireContext(), R.dimen.exam_item_space)
         )
         binding.rcExam.adapter = examListAdapter
+    }
+
+    private fun setupAd() {
+        val adRequest = AdRequest.Builder().build()
+        _binding?.adView?.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                Timber.d("onAdLoaded")
+            }
+
+            override fun onAdFailedToLoad(p0: LoadAdError) {
+                Timber.d("onAdFailedToLoad")
+            }
+        }
+        _binding?.adView?.loadAd(adRequest)
     }
 
     @SuppressLint("NotifyDataSetChanged")

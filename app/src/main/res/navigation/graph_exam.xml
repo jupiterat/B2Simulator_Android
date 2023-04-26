@@ -19,6 +19,24 @@
     <fragment
         android:id="@+id/navigation_exam_player"
         android:name="com.tech.b2simulator.presentation.player.ExamPlayerFragment"
-        tools:layout="@layout/fragment_player" />
+        tools:layout="@layout/fragment_player">
+        <action
+            android:id="@+id/action_navigation_exam_player_to_navigation_exam_result"
+            app:destination="@id/navigation_exam_result" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/navigation_exam_result"
+        android:name="com.tech.b2simulator.presentation.exam.result.ExamResultFragment"
+        tools:layout="@layout/fragment_exam_result">
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="message"
+            app:argType="string" />
+
+    </dialog>
 
 </navigation>
