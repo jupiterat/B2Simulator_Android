@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_banner_ads_id">ca-app-pub-4402759598980729/6285273295</string>
+    <string name="exam_list_banner_ads_id">ca-app-pub-4402759598980729/4637999762</string>
+    <string name="setting_banner_ads_id">ca-app-pub-4402759598980729/2011836424</string>
+    <string name="question_list_banner_ads_id">ca-app-pub-4402759598980729/7072591410</string>
+    <string name="player_banner_ads_id">ca-app-pub-4402759598980729/3575349471</string>
+
+    <string name="exam_list_interstitial_result_ads_id">ca-app-pub-4402759598980729/5152951187</string>
+    <string name="question_list_interstitial_result_ads_id">ca-app-pub-4402759598980729/7331595806</string>
+</resources>
