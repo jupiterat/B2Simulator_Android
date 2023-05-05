@@ -1,4 +1,4 @@
-package com.tech.b2simulator.presentation.exam.result
+package com.tech.b2simulator.presentation.common
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -8,8 +8,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tech.b2simulator.R
 
-class ExamResultFragment : DialogFragment() {
-    private val args: ExamResultFragmentArgs by navArgs()
+class AlertDialogFragment : DialogFragment() {
+    private val args: AlertDialogFragmentArgs by navArgs()
 
     companion object {
         val KEY_RESULT = "result"

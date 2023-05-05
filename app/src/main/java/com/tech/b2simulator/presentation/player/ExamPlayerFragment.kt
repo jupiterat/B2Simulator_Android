@@ -6,8 +6,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tech.b2simulator.R
 import com.tech.b2simulator.domain.common.ExamScoreType
+import com.tech.b2simulator.presentation.common.AlertDialogFragment
 import com.tech.b2simulator.presentation.exam.ExamViewModel
-import com.tech.b2simulator.presentation.exam.result.ExamResultFragment
 import timber.log.Timber
 
 class ExamPlayerFragment : PlayerFragment() {
@@ -67,7 +67,7 @@ class ExamPlayerFragment : PlayerFragment() {
 
     private fun observeExamResult() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
-            ExamResultFragment.KEY_RESULT
+            AlertDialogFragment.KEY_RESULT
         )?.observe(viewLifecycleOwner) {
             if (it) {
                 showInterstitialAds()
@@ -78,7 +78,7 @@ class ExamPlayerFragment : PlayerFragment() {
 
     private fun removeExamResultObserver() {
         findNavController().currentBackStackEntry?.savedStateHandle?.remove<Boolean>(
-            ExamResultFragment.KEY_RESULT
+            AlertDialogFragment.KEY_RESULT
         )
     }
 }

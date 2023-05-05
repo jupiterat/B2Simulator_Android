@@ -25,4 +25,8 @@ class ExamRepositoryImpl @Inject constructor(
         val data = exam.toExam()
         examDao.updateExam(data)
     }
+
+    override suspend fun clearScore() {
+        examDao.resetScore()
+    }
 }

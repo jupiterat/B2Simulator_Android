@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdListener
@@ -20,6 +21,7 @@ import timber.log.Timber
 class SettingFragment : B2BaseFragment(), SettingSection.ClickListener {
 
     private var _binding: FragmentSettingBinding? = null
+    private val settingViewModel: SettingViewModel by viewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,17 +36,17 @@ class SettingFragment : B2BaseFragment(), SettingSection.ClickListener {
                     R.string.notification_setting,
                     R.drawable.ic_baseline_notifications_none_24
                 ),
-                SettingItem(R.string.review_setting, R.drawable.ic_baseline_rate_review_24),
+//                SettingItem(R.string.review_setting, R.drawable.ic_baseline_rate_review_24),
                 SettingItem(R.string.share_setting, R.drawable.ic_baseline_ios_share_24),
             )
         ),
-        Pair(
-            R.string.payment_setting,
-            listOf(
-                SettingItem(R.string.membership_setting, R.drawable.ic_baseline_card_membership_24),
-                SettingItem(R.string.restore_setting, R.drawable.ic_baseline_restore_24)
-            )
-        ),
+//        Pair(
+//            R.string.payment_setting,
+//            listOf(
+//                SettingItem(R.string.membership_setting, R.drawable.ic_baseline_card_membership_24),
+//                SettingItem(R.string.restore_setting, R.drawable.ic_baseline_restore_24)
+//            )
+//        ),
         Pair(
             R.string.policy_setting,
             listOf(
@@ -135,9 +137,26 @@ class SettingFragment : B2BaseFragment(), SettingSection.ClickListener {
             R.string.notification_setting -> {
                 findNavController().navigate(SettingFragmentDirections.actionSettingToNotificationSetting())
             }
+            R.string.clear_data_setting -> {
+                settingViewModel.clearData()
+                showDataClearSuccessDialog()
+            }
             else -> {
                 Timber.d("no item selected")
             }
         }
+    }
+
+    private fun showDataClearSuccessDialog() {
+
+        val title = getString(R.string.notice)
+        val message = getString(R.string.message_clear_data_success)
+
+        findNavController().navigate(
+            SettingFragmentDirections.actionSettingToAlertDialog(
+                title,
+                message
+            )
+        )
     }
 }

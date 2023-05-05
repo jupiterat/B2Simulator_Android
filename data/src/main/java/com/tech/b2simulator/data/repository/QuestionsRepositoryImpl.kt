@@ -77,6 +77,14 @@ class QuestionsRepositoryImpl @Inject constructor(private val dao: QuestionsDao)
         dao.updateQuestion(data)
     }
 
+    override suspend fun clearSavedQuestions() {
+        dao.clearSavedQuestions()
+    }
+
+    override suspend fun clearScore() {
+        dao.resetScore()
+    }
+
     override fun getCategoryLocationProgress(categoryId: Int): Flow<Int> {
         Timber.d("getCategoryLocationProgress")
         return dao.getCategoryLocationProgress(categoryId)

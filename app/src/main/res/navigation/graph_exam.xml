@@ -14,6 +14,10 @@
         <action
             android:id="@+id/action_navigation_exam_to_navigation_player"
             app:destination="@id/navigation_exam_player" />
+
+        <action
+            android:id="@+id/action_navigation_exam_to_guide"
+            app:destination="@id/navigation_guide" />
     </fragment>
 
     <fragment
@@ -27,8 +31,7 @@
 
     <dialog
         android:id="@+id/navigation_exam_result"
-        android:name="com.tech.b2simulator.presentation.exam.result.ExamResultFragment"
-        tools:layout="@layout/fragment_exam_result">
+        android:name="com.tech.b2simulator.presentation.common.AlertDialogFragment">
         <argument
             android:name="title"
             app:argType="string" />
@@ -36,6 +39,12 @@
         <argument
             android:name="message"
             app:argType="string" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/navigation_guide"
+        android:name="com.tech.b2simulator.presentation.exam.ExamGuideDialog"
+        tools:layout="@layout/fragment_exam_guide">
 
     </dialog>
 

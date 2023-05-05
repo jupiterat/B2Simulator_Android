@@ -37,7 +37,7 @@ class ExamListFragment : B2BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item.itemId == R.id.action_info) {
-            //todo
+            findNavController().navigate(ExamListFragmentDirections.actionNavigationExamToGuide())
             true
         } else {
             super.onOptionsItemSelected(item)

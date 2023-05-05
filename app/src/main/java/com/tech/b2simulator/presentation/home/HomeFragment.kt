@@ -110,6 +110,7 @@ class HomeFragment : B2BaseFragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun observeData() {
+        homeViewModel.loadData()
         homeViewModel.categoryActionLiveData.observe(viewLifecycleOwner) {
             if (it is ViewState.Success) {
                 categoryActionAdapter?.setItems(it.data)

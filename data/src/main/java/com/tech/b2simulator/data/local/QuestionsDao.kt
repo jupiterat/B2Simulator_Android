@@ -40,4 +40,10 @@ interface QuestionsDao {
 
     @Query("SELECT COUNT(*) FROM Questions WHERE groupByAction = :id AND score != -1")
     fun getCategoryActionProgress(id: Int): Flow<Int>
+
+    @Query("UPDATE questions SET score = -1 WHERE score != -1")
+    fun resetScore()
+
+    @Query("UPDATE questions SET saved = 0 WHERE saved == 1")
+    fun clearSavedQuestions()
 }

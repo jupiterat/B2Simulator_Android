@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     val categoryActionLiveData: LiveData<ViewState<List<CategoryActionInfo>>>
         get() = _categoryActionLiveData
 
-    init {
+    fun loadData() {
         getActionCategory()
         getLocationCategory()
     }

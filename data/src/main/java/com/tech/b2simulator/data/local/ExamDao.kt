@@ -13,4 +13,7 @@ interface ExamDao {
 
     @Update(entity = Exams::class)
     suspend fun updateExam(exams: Exams)
+
+    @Query("UPDATE exams SET score = -1 WHERE score != -1")
+    fun resetScore()
 }

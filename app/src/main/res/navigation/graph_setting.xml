@@ -26,6 +26,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_setting_to_alert_dialog"
+            app:destination="@id/navigation_alert" />
+
     </fragment>
 
     <fragment
@@ -39,5 +43,17 @@
     <fragment
         android:id="@+id/navigation_notification_setting"
         android:name="com.tech.b2simulator.presentation.setting.notification.NotificationSettingFragment" />
+
+    <dialog
+        android:id="@+id/navigation_alert"
+        android:name="com.tech.b2simulator.presentation.common.AlertDialogFragment">
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="message"
+            app:argType="string" />
+    </dialog>
 
 </navigation>

@@ -1,7 +1,8 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.App" parent="Theme.MaterialComponents">
-
+        <!--        <item name="android:windowBackground">#ACABFF</item>-->
+        <!--        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_baseline_info_24</item>-->
         <!-- Primary brand color. -->
         <!--        <item name="colorPrimary">#ACABFF</item>-->
         <!--        <item name="android:textColorPrimary">@android:color/black</item>-->
@@ -20,5 +21,17 @@
         <!-- Customize your theme here. -->
         <item name="android:listDivider">@drawable/divider_gray</item>
 
+    </style>
+
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#71A2FD</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.App</item>
+    </style>
+
+    <style name="Dialog.FullScreen" parent="Theme.AppCompat.Dialog">
+        <item name="android:padding">0dp</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 </resources>

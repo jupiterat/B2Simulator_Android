@@ -27,7 +27,7 @@ class GetExamUseCase @Inject constructor(
     }
 
     private suspend fun generateQuestions(context: CoroutineContext): Flow<List<QuestionInfo>> {
-        return categoryRepository.getLocationCategory().distinctUntilChanged()
+        return categoryRepository.getLocationCategory()
             .map { categories ->
                 categories.map {
                     CoroutineScope(context).async {
