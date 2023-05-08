@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "490948081673",
+    "project_id": "b2simulator",
+    "storage_bucket": "b2simulator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490948081673:android:6453189c7711d6b52620d8",
+        "android_client_info": {
+          "package_name": "com.tech.b2simulator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490948081673-32euhhmuktsn1f94sdns65n01csl21bt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy3KCvpfTURleqQO3aBDgXTyLGV-f2Akg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490948081673-32euhhmuktsn1f94sdns65n01csl21bt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "490948081673-o5k7qs5cik66ts9f14phrbdfgp40d11a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tech.b2simulator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
