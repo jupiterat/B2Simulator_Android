@@ -32,10 +32,10 @@ class SettingFragment : B2BaseFragment(), SettingSection.ClickListener {
             R.string.general_setting,
             listOf(
                 SettingItem(R.string.clear_data_setting, R.drawable.ic_baseline_delete_outline_24),
-                SettingItem(
-                    R.string.notification_setting,
-                    R.drawable.ic_baseline_notifications_none_24
-                ),
+//                SettingItem(
+//                    R.string.notification_setting,
+//                    R.drawable.ic_baseline_notifications_none_24
+//                ),
 //                SettingItem(R.string.review_setting, R.drawable.ic_baseline_rate_review_24),
                 SettingItem(R.string.share_setting, R.drawable.ic_baseline_ios_share_24),
             )

@@ -67,6 +67,11 @@ abstract class PlayerFragment : B2BaseFragment() {
         return fragmentBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initializePlayer()
+    }
+
     override fun setUpViews() {
         setupAd()
         setupInterstitialAds()
@@ -74,7 +79,6 @@ abstract class PlayerFragment : B2BaseFragment() {
         btnBackward = binding?.btnBackward
         btnForward = binding?.btnForward
         hintContainer = binding?.container
-        initializePlayer()
     }
 
     private fun setupAd() {
@@ -158,8 +162,10 @@ abstract class PlayerFragment : B2BaseFragment() {
             player = ExoPlayer.Builder(requireContext())
                 .build()
                 .also { exoPlayer ->
+                    val url = BASE_URL + getPlayerViewModel().selectedQuestion.value?.url
+                    Timber.d("url: $url")
                     val mediaItem =
-                        MediaItem.fromUri(BASE_URL + { getPlayerViewModel().selectedQuestion.value?.url })
+                        MediaItem.fromUri(url)
                     exoPlayer.setMediaItem(mediaItem)
                     exoPlayer.setSeekParameters(SeekParameters.CLOSEST_SYNC)
                     exoPlayer.playWhenReady = playWhenReady
