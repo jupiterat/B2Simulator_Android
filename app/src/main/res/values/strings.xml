@@ -45,5 +45,9 @@
     <string name="exam_guide_content_1">Số câu hỏi: 10 câu \nThời gian làm bài: 5–6 phút \nSố điểm cần đạt: 35/50 \n\nChú ý: Khi làm bài thi chỉ có video được hiển thị</string>
     <string name="exam_guide_content_2">10 câu hỏi được lựa chọn ngẫu nhiên trong 120 câu theo cấu trúc như sau: \n\tChương 1: 2 câu \n\tChương 2: 1 câu \n\tChương 3: 2 câu \n\tChương 4: 1 câu \n\tChương 5: 2 câu \n\tChương 6: 2 câu \nTrong mỗi tình huống có tối đa 5đ và tối thiểu 0đ. Học viên lựa chọn được giữa 2 mốc này sẽ đạt mức điểm tương ứng từ 5–4–3–2–1 điểm</string>
     <string name="exam_guide_content_3">Bước 1: Nhập số báo danh thí sinh.\nBước 2: Nhấn xác nhận thí sinh.\nBước 3: Nhấn nút Bắt đầu thi \nBước 4: nhấn nút Space khi phát hiện tình huống nguy hiểm. Các tình huống sẽ tự động chuyển khi hết thời gian.\nBước 5: Khi kết thúc 10 tình huống hệ thống sẽ tự động hiện kết quả thi</string>
+    <string name="reminders_notification_channel_id">daily_reminder</string>
+    <string name="title_notification_reminder">Thông báo</string>
+    <string name="description_notification_reminder">Luyện tập 15 phút mỗi ngày giúp bạn ghi nhớ tốt hơn!!!</string>
+    <string name="reminders_notification_channel_name">daily_reminder</string>
 
 </resources>

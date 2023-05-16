@@ -1,16 +1,22 @@
 package com.tech.b2simulator.presentation
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.tech.b2simulator.R
+import com.tech.b2simulator.alarm.RemindersManager
 import com.tech.b2simulator.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -27,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        createNotificationsChannels()
+        RemindersManager.startReminder(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -59,5 +67,18 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return navController.navigateUp()
                 || super.onSupportNavigateUp()
+    }
+
+    private fun createNotificationsChannels() {
+        Timber.d("create notification channel")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                getString(R.string.reminders_notification_channel_id),
+                getString(R.string.reminders_notification_channel_name),
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            ContextCompat.getSystemService(this, NotificationManager::class.java)
+                ?.createNotificationChannel(channel)
+        }
     }
 }
